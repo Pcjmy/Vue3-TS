@@ -1,5 +1,5 @@
 import { defineComponent, reactive, ref } from 'vue'
-import HelloWorld from './components/HelloWorld.vue'
+import HelloWorld from './components/HelloWorld'
 
 // eslint-disable-next-line
 const img = require('./assets/logo.png')
