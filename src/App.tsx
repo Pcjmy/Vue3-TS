@@ -4,6 +4,10 @@ import HelloWorld from './components/HelloWorld.vue'
 // eslint-disable-next-line
 const img = require('./assets/logo.png')
 
+function renderHelloWorld(num: number) {
+  return <HelloWorld age={num} />
+}
+
 export default defineComponent({
   setup() {
     const state = reactive({
@@ -23,7 +27,8 @@ export default defineComponent({
         <div id="app">
           <img src={img} alt="Vue logo" />
           <p>{state.name + number}</p>
-          <HelloWorld age={18} />
+          <input type="text" v-model={state.name} />
+          {renderHelloWorld(18)}
         </div>
       )
       // return h('div', { id: 'app' }, [
