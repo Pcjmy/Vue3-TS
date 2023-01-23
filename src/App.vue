@@ -1,10 +1,13 @@
 <template>
   <img alt="Vue logo" src="./assets/logo.png" />
   <HelloWorld :age="18" />
+  <p>{{ state.name }}</p>
+  <p>{{ nameRef }} : {{ computedNameRef }}</p>
 </template>
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue'
+import { reactive, ref, computed, watchEffect } from 'vue'
 import HelloWorld from './components/HelloWorld.vue'
 
 interface Config {
@@ -24,6 +27,24 @@ export default defineComponent({
   },
   components: {
     HelloWorld,
+  },
+  setup() {
+    const state = reactive({
+      name: 'Pcjmy',
+    })
+    // let name = 'Pcjmy'
+    const nameRef = ref('Pcjmy')
+    setInterval(() => {
+      state.name += '1'
+      nameRef.value += '1'
+    }, 1000)
+    const computedNameRef = computed(() => {
+      return nameRef.value + '2'
+    })
+    watchEffect(() => {
+      console.log(nameRef.value)
+    })
+    return { state, nameRef, computedNameRef }
   },
 })
 </script>
