@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { defineComponent, reactive, ref } from 'vue'
 import HelloWorld from './components/HelloWorld.vue'
 
@@ -27,14 +26,13 @@ export default defineComponent({
           <HelloWorld age={18} />
         </div>
       )
-        
-    //   return h('div', { id: 'app' }, [
-    //     h('img', {
-    //       alt: 'Vue logo',
-    //       src: img,
-    //     }),
-    //     h('p', state.name + number),
-    //   ])
+      // return h('div', { id: 'app' }, [
+      //   h('img', {
+      //     alt: 'Vue logo',
+      //     src: img,
+      //   }),
+      //   h('p', state.name + number),
+      // ])
     }
-  }
+  },
 })
