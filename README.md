@@ -4,9 +4,12 @@
 
 ```shell
 > npm install @vue/babel-plugin-jsx -D
+> npm install ajv -S
 ```
 
 [https://github.com/vuejs/babel-plugin-jsx](https://github.com/vuejs/babel-plugin-jsx)
+[Ajv JSON schema validator](https://ajv.js.org)
+[JSON Schema](https://json-schema.org/)
 
 ## 遇到的问题
 
