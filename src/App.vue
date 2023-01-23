@@ -7,7 +7,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue'
-import { reactive, ref, computed, watchEffect } from 'vue'
+import { reactive, ref, computed } from 'vue'
 import HelloWorld from './components/HelloWorld.vue'
 
 interface Config {
@@ -28,6 +28,11 @@ export default defineComponent({
   components: {
     HelloWorld,
   },
+  mounted() {
+    console.log(this.state)
+    console.log(this.nameRef)
+    console.log(this.computedNameRef)
+  },
   setup() {
     const state = reactive({
       name: 'Pcjmy',
@@ -40,9 +45,6 @@ export default defineComponent({
     }, 1000)
     const computedNameRef = computed(() => {
       return nameRef.value + '2'
-    })
-    watchEffect(() => {
-      console.log(nameRef.value)
     })
     return { state, nameRef, computedNameRef }
   },
