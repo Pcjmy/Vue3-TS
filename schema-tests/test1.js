@@ -1,4 +1,5 @@
 const Ajv = require('ajv')
+const localize = require('ajv-i18n')
 const addFormats = require('ajv-formats')
 const ajv = new Ajv() // options can be passed, e.g. {allErrors: true}
 addFormats(ajv)
@@ -23,7 +24,7 @@ ajv.addKeyword({
   keyword: 'test',
   macro: () => {
     return {
-      minLength: 3,
+      minLength: 10,
     }
   },
 })
@@ -36,4 +37,7 @@ const data = {
 }
 
 const valid = validate(data)
-if (!valid) console.log(validate.errors)
+if (!valid) {
+  localize.zh(validate.errors)
+  console.log(validate.errors)
+}
