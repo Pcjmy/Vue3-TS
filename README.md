@@ -6,6 +6,7 @@
 > npm install @vue/babel-plugin-jsx -D
 > npm install ajv -S
 > npm install ajv-i18n -S
+> npm install ajv-errors -S
 ```
 
 [https://github.com/vuejs/babel-plugin-jsx](https://github.com/vuejs/babel-plugin-jsx)

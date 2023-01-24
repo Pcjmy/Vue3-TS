@@ -1,7 +1,8 @@
 const Ajv = require('ajv')
 const localize = require('ajv-i18n')
 const addFormats = require('ajv-formats')
-const ajv = new Ajv() // options can be passed, e.g. {allErrors: true}
+const ajv = new Ajv({ allErrors: true }) // options can be passed, e.g. {allErrors: true}
+require('ajv-errors')(ajv)
 addFormats(ajv)
 
 const schema = {
@@ -9,7 +10,9 @@ const schema = {
   properties: {
     foo: {
       type: 'string',
-      test: true,
+      // test: true,
+      errorMessage: '这是不对的',
+      minLength: 10,
     },
     bar: {
       type: 'string',
@@ -38,6 +41,6 @@ const data = {
 
 const valid = validate(data)
 if (!valid) {
-  localize.zh(validate.errors)
+  // localize.zh(validate.errors)
   console.log(validate.errors)
 }
