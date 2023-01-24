@@ -3,17 +3,12 @@ const addFormats = require('ajv-formats')
 const ajv = new Ajv() // options can be passed, e.g. {allErrors: true}
 addFormats(ajv)
 
-ajv.addFormat('test', (data) => {
-  console.log(data)
-  return data === 'hello'
-})
-
 const schema = {
   type: 'object',
   properties: {
     foo: {
       type: 'string',
-      format: 'test',
+      test: 'abcdef',
     },
     bar: {
       type: 'string',
@@ -23,6 +18,14 @@ const schema = {
   required: ['foo'],
   additionalProperties: false,
 }
+
+ajv.addKeyword({
+  keyword: 'test',
+  validate: (schema, data) => {
+    if (schema === true) return true
+    else return schema.length === 6
+  },
+})
 
 const validate = ajv.compile(schema)
 
