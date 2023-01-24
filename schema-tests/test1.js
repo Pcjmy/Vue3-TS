@@ -21,12 +21,10 @@ const schema = {
 
 ajv.addKeyword({
   keyword: 'test',
-  compile: (schema, parentSchema) => {
-    console.log(schema, parentSchema)
-    return () => true
-  },
-  metaSchema: {
-    type: 'boolean',
+  macro: () => {
+    return {
+      minLength: 3,
+    }
   },
 })
 
