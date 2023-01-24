@@ -8,7 +8,7 @@ const schema = {
   properties: {
     foo: {
       type: 'string',
-      test: 'abcdef',
+      test: true,
     },
     bar: {
       type: 'string',
@@ -21,9 +21,12 @@ const schema = {
 
 ajv.addKeyword({
   keyword: 'test',
-  validate: (schema, data) => {
-    if (schema === true) return true
-    else return schema.length === 6
+  compile: (schema, parentSchema) => {
+    console.log(schema, parentSchema)
+    return () => true
+  },
+  metaSchema: {
+    type: 'boolean',
   },
 })
 
