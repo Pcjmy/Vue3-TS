@@ -3,10 +3,18 @@ const addFormats = require('ajv-formats')
 const ajv = new Ajv() // options can be passed, e.g. {allErrors: true}
 addFormats(ajv)
 
+ajv.addFormat('test', (data) => {
+  console.log(data)
+  return data === 'hello'
+})
+
 const schema = {
   type: 'object',
   properties: {
-    foo: { type: 'integer' },
+    foo: {
+      type: 'string',
+      format: 'test',
+    },
     bar: {
       type: 'string',
       format: 'email',
@@ -19,7 +27,7 @@ const schema = {
 const validate = ajv.compile(schema)
 
 const data = {
-  foo: 1,
+  foo: 'hello',
   bar: 'abc@qq.com',
 }
 
