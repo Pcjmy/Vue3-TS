@@ -10,6 +10,10 @@
 > npm install monaco-editor -D
 > npm install vue-jss -S
 > npm install jss jss-preset-default -S
+> npm install jsonpointer -S
+> npm install lodash.topath -S
+> npm i --save-dev @types/lodash.union
+> npm i --save-dev @types/json-schema-merge-allof
 ```
 
 [https://github.com/vuejs/babel-plugin-jsx](https://github.com/vuejs/babel-plugin-jsx)
