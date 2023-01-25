@@ -7,11 +7,16 @@
 > npm install ajv -S
 > npm install ajv-i18n -S
 > npm install ajv-errors -S
+> npm install monaco-editor -D
+> npm install vue-jss -S
+> npm install jss jss-preset-default -S
 ```
 
 [https://github.com/vuejs/babel-plugin-jsx](https://github.com/vuejs/babel-plugin-jsx)
 [Ajv JSON schema validator](https://ajv.js.org)
 [JSON Schema](https://json-schema.org/)
+[ajv-i18n](https://github.com/ajv-validator/ajv-i18n)
+[ajv-errors](https://github.com/ajv-validator/ajv-errors)
 
 ## 遇到的问题
 
