@@ -1,4 +1,4 @@
-lib
-src/demos
-src/plugins
 schema-tests
+MonacoEditor.tsx
+vue.config.js
+/tests

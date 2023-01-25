@@ -6,46 +6,53 @@ export default {
     required: ['firstName', 'lastName'],
     properties: {
       firstName: {
+        title: 'firstName',
         type: 'string',
         default: 'Chuck',
-        title: 'firstName',
-        minLength: 10,
       },
       lastName: {
-        type: 'string',
         title: 'lastName',
+        type: 'string',
       },
       telephone: {
+        title: 'telephone',
         type: 'string',
         minLength: 10,
-        title: 'telephone',
       },
-      multiTypeArray: {
+      staticArray: {
+        title: 'staticArray',
         type: 'array',
         items: [
-          { type: 'string', title: 'string' },
-          { type: 'number', title: 'number' },
+          {
+            type: 'string',
+          },
+          {
+            type: 'number',
+          },
         ],
-        title: 'multiTypeArray',
       },
       singleTypeArray: {
-        type: 'array',
         title: 'singleTypeArray',
+        type: 'array',
         items: {
           type: 'object',
           properties: {
-            name: { type: 'string', title: 'name' },
-            age: { type: 'number', title: 'age' },
+            name: {
+              type: 'string',
+            },
+            age: {
+              type: 'number',
+            },
           },
         },
       },
       multiSelectArray: {
+        title: 'multiSelectArray',
         type: 'array',
         items: {
           type: 'string',
-          enum: ['foo', 'bar', 'foobar'],
+          enum: ['123', '456', '789'],
         },
-        title: 'multiSelectArray',
       },
     },
   },
@@ -69,6 +76,6 @@ export default {
     age: 75,
     bio: 'Roundhouse kicking asses since 1940',
     password: 'noneed',
-    singleTypeArray: [{ name: 'cwy', age: 28 }],
+    singleTypeArray: [{ name: 'jokcy', age: 12 }],
   },
 }

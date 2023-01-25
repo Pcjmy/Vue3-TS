@@ -1,18 +1,15 @@
-/* eslint-disable */
 import { defineComponent, ref, Ref, reactive, watchEffect } from 'vue'
 import { createUseStyles } from 'vue-jss'
 
 import MonacoEditor from './components/MonacoEditor'
 
-// 测试数据
 import demos from './demos'
 
-// 导入组件库
 import SchemaForm, { ThemeProvider } from '../lib'
 import themeDefault from '../lib/theme-default'
 
 import customFormat from './plugins/customFormat'
-import customKeyword from './plugins/customKeyword'
+import customKeywords from './plugins/customKeyword'
 
 // TODO: 在lib中export
 type Schema = any
@@ -22,7 +19,6 @@ function toJson(data: any) {
   return JSON.stringify(data, null, 2)
 }
 
-// css in js
 const useStyles = createUseStyles({
   container: {
     display: 'flex',
@@ -77,10 +73,8 @@ const useStyles = createUseStyles({
   },
 })
 
-// implementation
 export default defineComponent({
   setup() {
-    // tab switch
     const selectedRef: Ref<number> = ref(0)
 
     const demo: {
@@ -101,10 +95,8 @@ export default defineComponent({
       customValidate: undefined,
     })
 
-    // 数据监听，确定 demo 的当前值
     watchEffect(() => {
       const index = selectedRef.value
-      // demos is test data provide by lib user
       const d: any = demos[index]
       demo.schema = d.schema
       demo.data = d.default
@@ -115,26 +107,23 @@ export default defineComponent({
       demo.customValidate = d.customValidate
     })
 
-    // const methodRef: Ref<any> = ref()
+    const methodRef: Ref<any> = ref()
 
-    // vue-jss lib
     const classesRef = useStyles()
 
     const handleChange = (v: any) => {
-      // console.log('data', v, 'toJson(v)', toJson(v))
       demo.data = v
       demo.dataCode = toJson(v)
     }
 
-    // closure 闭包 demo
     function handleCodeChange(
-      field: 'schema' | 'data' | 'uiSchema',
+      filed: 'schema' | 'data' | 'uiSchema',
       value: string,
     ) {
       try {
         const json = JSON.parse(value)
-        demo[field] = json
-        ;(demo as any)[`${field}Code`] = value
+        demo[filed] = json
+        ;(demo as any)[`${filed}Code`] = value
       } catch (err) {
         // some thing
       }
@@ -144,12 +133,12 @@ export default defineComponent({
     const handleDataChange = (v: string) => handleCodeChange('data', v)
     const handleUISchemaChange = (v: string) => handleCodeChange('uiSchema', v)
 
-    const contextRef = ref() // 进行验证用
-    const nameRef = ref() // 获取 SchemaForm 引用
+    const contextRef = ref()
+    const nameRef = ref()
 
-    const validateForm = () => {
+    function validateForm() {
       contextRef.value.doValidate().then((result: any) => {
-        console.log(result, '............')
+        console.log(result, '......')
       })
     }
 
@@ -157,7 +146,7 @@ export default defineComponent({
       const classes = classesRef.value
       const selected = selectedRef.value
 
-      // console.log('nameRef --------->', nameRef)
+      // console.log(methodRef, nameRef)
 
       return (
         // <StyleThemeProvider>
@@ -178,8 +167,7 @@ export default defineComponent({
                 </button>
               ))}
             </div>
-          </div>{' '}
-          {/* /.menu */}
+          </div>
           <div class={classes.content}>
             <div class={classes.code}>
               <MonacoEditor
@@ -202,32 +190,31 @@ export default defineComponent({
                   title="Value"
                 />
               </div>
-              {/* /.uiAndValue */}
             </div>
-            {/* /.code */}
             <div class={classes.form}>
-              <ThemeProvider theme={themeDefault as any}>
+              <ThemeProvider theme={themeDefault}>
                 <SchemaForm
                   schema={demo.schema}
-                  value={demo.data}
+                  uiSchema={demo.uiSchema || {}}
                   onChange={handleChange}
+                  value={demo.data}
                   contextRef={contextRef}
                   ref={nameRef}
-                  customValidate={demo.customValidate}
-                  uiSchema={demo.uiSchema || {}}
                   customFormats={customFormat}
-                  customKeywords={customKeyword}
+                  customKeywords={customKeywords}
+                  customValidate={demo.customValidate}
                 />
               </ThemeProvider>
-              <button onClick={validateForm}>校验</button>
+              {/* <SchemaForm
+                schema={demo.schema!}
+                uiSchema={demo.uiSchema!}
+                onChange={handleChange}
+                contextRef={methodRef}
+                value={demo.data}
+              /> */}
+              <button onClick={validateForm}>校 验</button>
             </div>
           </div>
-          <a
-            href="https://github.com/cwy007/vue3-json-schema-form"
-            target="_blank"
-          >
-            github
-          </a>
         </div>
         // </VJSFThemeProvider>
         // </StyleThemeProvider>

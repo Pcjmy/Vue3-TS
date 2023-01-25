@@ -1,32 +1,41 @@
-import { defineComponent, ref, watch } from 'vue'
-import { SelectionWidgetPropsDefine } from '../types'
+import { defineComponent, PropType, ref, watch, watchEffect } from 'vue'
+import { SelectionWidgetPropsDefine, SelectionWidgetDefine } from '../types'
+
 import { withFormItem } from './FormItem'
 
-const SelectionWidget = withFormItem(
+const Selection: SelectionWidgetDefine = withFormItem(
   defineComponent({
     name: 'SelectionWidget',
     props: SelectionWidgetPropsDefine,
     setup(props) {
-      const currentValueRef = ref(props.value || [])
+      const currentValueRef = ref(props.value)
 
       watch(currentValueRef, (newv, oldv) => {
-        if (newv !== oldv) props.onChange(newv)
+        if (newv !== props.value) {
+          props.onChange(newv)
+        }
       })
 
       watch(
         () => props.value,
         (v) => {
-          if (v !== currentValueRef.value) currentValueRef.value = v
+          if (v !== currentValueRef.value) {
+            currentValueRef.value = v
+          }
         },
       )
+
+      watchEffect(() => {
+        console.log(currentValueRef.value, '------------->')
+      })
 
       return () => {
         const { options } = props
         return (
           <select multiple={true} v-model={currentValueRef.value}>
-            {options.map((opt) => {
-              return <option value={opt.value}>{opt.key}</option>
-            })}
+            {options.map((op) => (
+              <option value={op.value}>{op.key}</option>
+            ))}
           </select>
         )
       }
@@ -34,4 +43,4 @@ const SelectionWidget = withFormItem(
   }),
 )
 
-export default SelectionWidget
+export default Selection

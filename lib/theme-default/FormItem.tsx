@@ -1,7 +1,7 @@
 import { defineComponent } from 'vue'
-import { createUseStyles } from 'vue-jss'
+import { CommonWidgetPropsDefine, CommonWidgetDefine } from '../types'
 
-import { CommonWidgetPropsDefine } from '../types'
+import { createUseStyles } from 'vue-jss'
 
 const useStyles = createUseStyles({
   container: {},
@@ -23,11 +23,9 @@ const FormItem = defineComponent({
   props: CommonWidgetPropsDefine,
   setup(props, { slots }) {
     const classesRef = useStyles()
-
     return () => {
-      const classes = classesRef.value
       const { schema, errors } = props
-
+      const classes = classesRef.value
       return (
         <div class={classes.container}>
           <label class={classes.label}>{schema.title}</label>
@@ -45,12 +43,12 @@ const FormItem = defineComponent({
 
 export default FormItem
 
-// HOC: higger order component
+// HOC: Higher Order Component: 高阶组件
 export function withFormItem(Widget: any) {
   return defineComponent({
     name: `Wrapped${Widget.name}`,
     props: CommonWidgetPropsDefine,
-    setup(props, { attrs }) {
+    setup(props, { attrs, slots }) {
       return () => {
         return (
           <FormItem {...props}>
@@ -59,5 +57,5 @@ export function withFormItem(Widget: any) {
         )
       }
     },
-  })
+  }) as any
 }

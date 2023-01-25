@@ -2,8 +2,7 @@ import { CustomKeyword } from '../../lib/types'
 
 const keyword: CustomKeyword = {
   name: 'test',
-  definition: {
-    keyword: 'test',
+  deinition: {
     macro: () => {
       return {
         minLength: 10,

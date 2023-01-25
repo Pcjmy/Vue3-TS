@@ -1,5 +1,5 @@
-import { Format, MacroKeywordDefinition } from 'ajv'
-import { PropType, DefineComponent } from 'vue'
+import { PropType, defineComponent, DefineComponent } from 'vue'
+import { FormatDefinition, KeywordDefinition, CompilationContext } from 'ajv'
 import { ErrorSchema } from './validator'
 
 export enum SchemaTypes {
@@ -13,6 +13,7 @@ export enum SchemaTypes {
 
 type SchemaRef = { $ref: string }
 
+// type Schema = any
 export interface Schema {
   type?: SchemaTypes | string
   const?: any
@@ -43,16 +44,20 @@ export interface Schema {
 
   minLength?: number
   maxLength?: number
-  minimum?: number
+  minimun?: number
   maximum?: number
   multipleOf?: number
   exclusiveMaximum?: number
   exclusiveMinimum?: number
 }
 
-export const FieldPropsDefine = {
+export const FiledPropsDefine = {
   schema: {
     type: Object as PropType<Schema>,
+    required: true,
+  },
+  uiSchema: {
+    type: Object as PropType<UISchema>,
     required: true,
   },
   value: {
@@ -70,13 +75,13 @@ export const FieldPropsDefine = {
     type: Object as PropType<ErrorSchema>,
     required: true,
   },
-  uiSchema: {
-    type: Object as PropType<UISchema>,
-    required: true,
-  },
 } as const
 
-export type CommonFieldType = DefineComponent<typeof FieldPropsDefine>
+export const TypeHelperComponent = defineComponent({
+  props: FiledPropsDefine,
+})
+
+export type CommonFieldType = typeof TypeHelperComponent
 
 export const CommonWidgetPropsDefine = {
   value: {},
@@ -85,7 +90,7 @@ export const CommonWidgetPropsDefine = {
     required: true,
   },
   errors: {
-    type: Object as PropType<string[]>,
+    type: Array as PropType<string[]>,
   },
   schema: {
     type: Object as PropType<Schema>,
@@ -99,22 +104,42 @@ export const CommonWidgetPropsDefine = {
 export const SelectionWidgetPropsDefine = {
   ...CommonWidgetPropsDefine,
   options: {
-    type: Array as PropType<{ key: string; value: any }[]>,
+    type: Array as PropType<
+      {
+        key: string
+        value: any
+      }[]
+    >,
     required: true,
   },
 } as const
 
-export type CommonWidgetDefine = DefineComponent<typeof CommonWidgetPropsDefine>
+export type CommonWidgetDefine = DefineComponent<
+  typeof CommonWidgetPropsDefine,
+  {},
+  {}
+>
 
 export type SelectionWidgetDefine = DefineComponent<
-  typeof SelectionWidgetPropsDefine
+  typeof SelectionWidgetPropsDefine,
+  {},
+  {}
 >
+
+export enum SelectionWidgetNames {
+  SelectionWidget = 'SelectionWidget',
+}
+
+export enum CommonWidgetNames {
+  TextWidget = 'TextWidget',
+  NumberWidget = 'NumberWidget',
+}
 
 export interface Theme {
   widgets: {
-    SelectionWidget: SelectionWidgetDefine
-    TextWidget: CommonWidgetDefine
-    NumberWidget: CommonWidgetDefine
+    [SelectionWidgetNames.SelectionWidget]: SelectionWidgetDefine
+    [CommonWidgetNames.TextWidget]: CommonWidgetDefine
+    [CommonWidgetNames.NumberWidget]: CommonWidgetDefine
   }
 }
 
@@ -125,17 +150,37 @@ export type UISchema = {
   }
   items?: UISchema | UISchema[]
 } & {
-  [key: string]: string
+  [key: string]: any
 }
 
 export interface CustomFormat {
   name: string
-  definition: Format
+  definition: FormatDefinition
   component: CommonWidgetDefine
+}
+
+interface VjsfKeywordDefinition {
+  type?: string | Array<string>
+  async?: boolean
+  $data?: boolean
+  errors?: boolean | string
+  metaSchema?: object
+  // schema: false makes validate not to expect schema (ValidateFunction)
+  schema?: boolean
+  statements?: boolean
+  dependencies?: Array<string>
+  modifying?: boolean
+  valid?: boolean
+  // one and only one of the following properties should be present
+  macro: (
+    schema: any,
+    parentSchema: object,
+    it: CompilationContext,
+  ) => object | boolean
 }
 
 export interface CustomKeyword {
   name: string
-  definition: MacroKeywordDefinition
+  deinition: VjsfKeywordDefinition
   transformSchema: (originSchema: Schema) => Schema
 }

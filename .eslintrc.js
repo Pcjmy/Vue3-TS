@@ -7,7 +7,8 @@ module.exports = {
     'plugin:vue/vue3-essential',
     'eslint:recommended',
     '@vue/typescript/recommended',
-    'plugin:prettier/recommended',
+    '@vue/prettier',
+    '@vue/prettier/@typescript-eslint',
   ],
   parserOptions: {
     ecmaVersion: 2020,
@@ -15,13 +16,10 @@ module.exports = {
   rules: {
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
-    'prettier/prettier': [
-      'warn',
-      {
-        singleQuote: true,
-        endOfLine: 'auto', //不让prettier检测文件每行结束的格式
-      },
-    ],
+    '@typescript-eslint/no-use-before-define': 'off',
+    'no-prototype-builtins': 'off',
+    '@typescript-eslint/no-explicit-any': 'off',
+    'vue/no-mutating-props': 'off',
   },
   overrides: [
     {

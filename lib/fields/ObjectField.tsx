@@ -1,18 +1,36 @@
-import { defineComponent } from 'vue'
+import { defineComponent, DefineComponent } from 'vue'
 
-import { FieldPropsDefine } from '../types'
-import { useVJSFContext } from '../context'
+import { FiledPropsDefine, CommonFieldType } from '../types'
 import { isObject } from '../utils'
+import { SchemaFormContextKey, useVJSFContext } from '../context'
+
+// import SchemaItem from '../SchemaItem'
+
+// console.log(SchemaItem)
+
+const schema = {
+  type: 'object',
+  properties: {
+    name: {
+      type: 'string',
+    },
+    age: {
+      type: 'number',
+    },
+  },
+}
+
+type A = DefineComponent<typeof FiledPropsDefine, {}, {}>
 
 export default defineComponent({
   name: 'ObjectField',
-  props: FieldPropsDefine,
+  props: FiledPropsDefine,
   setup(props) {
-    const VJSFContext = useVJSFContext()
+    const context = useVJSFContext()
 
     const handleObjectFieldChange = (key: string, v: any) => {
       const value: any = isObject(props.value) ? props.value : {}
-      console.log('v', typeof v)
+
       if (v === undefined) {
         delete value[key]
       } else {
@@ -24,23 +42,24 @@ export default defineComponent({
 
     return () => {
       const { schema, rootSchema, value, errorSchema, uiSchema } = props
-      const { SchemaItem } = VJSFContext
+
+      const { SchemaItem } = context
+
       const properties = schema.properties || {}
+
       const currentValue: any = isObject(value) ? value : {}
 
-      return Object.keys(properties).map((k: string, index: number) => {
-        return (
-          <SchemaItem
-            schema={properties[k]}
-            rootSchema={rootSchema}
-            value={currentValue[k]}
-            key={index}
-            onChange={(v: any) => handleObjectFieldChange(k, v)}
-            errorSchema={errorSchema[k] || {}}
-            uiSchema={uiSchema.properties ? uiSchema.properties[k] || {} : {}}
-          />
-        )
-      })
+      return Object.keys(properties).map((k: string, index: number) => (
+        <SchemaItem
+          schema={properties[k]}
+          uiSchema={uiSchema.properties ? uiSchema.properties[k] || {} : {}}
+          rootSchema={rootSchema}
+          value={currentValue[k]}
+          errorSchema={errorSchema[k] || {}}
+          key={index}
+          onChange={(v: any) => handleObjectFieldChange(k, v)}
+        />
+      ))
     }
   },
 })

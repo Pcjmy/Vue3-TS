@@ -1,29 +1,35 @@
-import { getWidget } from '../theme'
+import { FiledPropsDefine, CommonWidgetNames } from '../types'
 import { defineComponent } from 'vue'
-import { FieldPropsDefine, CommonWidgetDefine } from '../types'
+
+import { getWidget } from '../theme'
 
 export default defineComponent({
-  name: 'NumberField',
-  props: FieldPropsDefine,
+  name: 'NumberFeild',
+  props: FiledPropsDefine,
   setup(props) {
-    const handleChange = (v: any) => {
-      console.log('v', v)
-      props.onChange(v)
-      // const value = Number(v)
-      // Number.isNaN(value) ? props.onChange(undefined) : props.onChange(value)
+    const handleChange = (v: string) => {
+      // const value = e.target.value
+
+      const num = Number(v)
+
+      if (Number.isNaN(num)) {
+        props.onChange(undefined)
+      } else {
+        props.onChange(num)
+      }
     }
 
-    const NumberWidgetRef = getWidget('NumberWidget')
+    const NumberWidgetRef = getWidget(CommonWidgetNames.NumberWidget)
 
     return () => {
-      const NumberWidget = NumberWidgetRef.value as CommonWidgetDefine
-      const { value, errorSchema, schema } = props
+      const NumberWidget = NumberWidgetRef.value
+      const { rootSchema, errorSchema, ...rest } = props
+      // return <input value={value as any} type="number" onInput={handleChange} />
       return (
         <NumberWidget
-          value={value}
-          onChange={handleChange}
+          {...rest}
           errors={errorSchema.__errors}
-          schema={schema}
+          onChange={handleChange}
         />
       )
     }

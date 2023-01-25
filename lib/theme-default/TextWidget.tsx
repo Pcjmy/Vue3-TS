@@ -1,28 +1,30 @@
-import { defineComponent, computed } from 'vue'
-import { CommonWidgetPropsDefine } from '../types'
+import { CommonWidgetPropsDefine, CommonWidgetDefine } from '../types'
+import { computed, defineComponent } from 'vue'
+
 import { withFormItem } from './FormItem'
 
-const TextWidget = withFormItem(
+const TextWidget: CommonWidgetDefine = withFormItem(
   defineComponent({
     name: 'TextWidget',
     props: CommonWidgetPropsDefine,
     setup(props) {
       const handleChange = (e: any) => {
-        const v = e.target.value
+        const value = e.target.value
         e.target.value = props.value
-        props.onChange(v)
+        props.onChange(value)
       }
 
       const styleRef = computed(() => {
-        return { color: (props.options && props.options.color) || 'black' }
+        return {
+          color: (props.options && props.options.color) || 'black',
+        }
       })
 
       return () => {
-        const { value } = props
         return (
           <input
             type="text"
-            value={value as any}
+            value={props.value as any}
             onInput={handleChange}
             style={styleRef.value}
           />
